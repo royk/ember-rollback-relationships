@@ -23,11 +23,13 @@ export default {
                         }
                         if (descriptor.kind === 'hasMany') {
                             this.hasMany(name).load().then((entities)=> {
+                                const oldHasMany = this.get("oldHasMany");
                                 if (entities && entities.length) {
-                                    const oldHasMany = this.get("oldHasMany");
                                     oldHasMany[name] = entities.map(model=>model.id);
-                                    this.set('oldHasMany', oldHasMany);
+                                } else {
+                                    oldHasMany[name] = [];
                                 }
+                                this.set('oldHasMany', oldHasMany);
                             });
                         }
                     }, this);
